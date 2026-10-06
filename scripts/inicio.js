@@ -168,9 +168,9 @@
 })();
 
 /* =======================================================================
- * MENU SANDUÍCHE LATERAL (OFF-CANVAS)
+ * MENU SANDUÍCHE LATERAL (OFF-CANVAS) - ATUALIZADO
  * ======================================================================= */
-(function () {
+document.addEventListener('DOMContentLoaded', function() {
     const btnMenu = document.getElementById('btn-menu-mobile');
     const menuColapsavel = document.getElementById('menu-colapsavel');
     const btnFechar = document.getElementById('btn-fechar-menu');
@@ -178,23 +178,29 @@
 
     if (!btnMenu || !menuColapsavel) return;
 
-    // Função central que abre e fecha o menu
     function alternarMenu() {
+        // Abre ou fecha o menu lateral
         menuColapsavel.classList.toggle('aberto');
-        overlay.classList.toggle('ativo');
         
-        // Impede o site de rolar no fundo enquanto o menu está aberto
+        // Mostra ou esconde o fundo escuro
+        if (overlay) {
+            overlay.classList.toggle('ativo');
+        }
+        
+        // CORREÇÃO DO PROBLEMA 4: Trava a rolagem do corpo da página e do HTML inteiro
         if (menuColapsavel.classList.contains('aberto')) {
             document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden'; 
         } else {
+            // Destrava a rolagem quando fecha o menu
             document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
     }
 
-    // Eventos de clique
-    btnMenu.addEventListener('click', alternarMenu);
-    
-    // Permite fechar clicando no 'X' ou clicando na área escura (overlay)
-    if (btnFechar) btnFechar.addEventListener('click', alternarMenu);
-    if (overlay) overlay.addEventListener('click', alternarMenu);
-})();
+    // CORREÇÃO DO PROBLEMA 3: Usa .onclick direto para evitar cliques duplicados ou não registrados
+    btnMenu.onclick = alternarMenu;
+    if (btnFechar) btnFechar.onclick = alternarMenu;
+    if (overlay) overlay.onclick = alternarMenu;
+});
+
