@@ -248,84 +248,102 @@ header.cabecalho-principal form[role="search"] button {
         padding: 1rem;
     }
 
-    .btn-menu-mobile {
-        display: block;
+    /* Remove o blur no mobile: ele quebra o position:fixed do menu */
+    header.cabecalho-principal,
+    header.cabecalho-principal.header-escuro {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+    header.cabecalho-principal { background-color: rgba(255, 244, 228, 0.92); }
+    header.cabecalho-principal.header-escuro { background-color: rgba(49, 39, 25, 0.95); }
+
+    .btn-menu-mobile { display: block; }
+
+    .overlay-menu {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
     }
 
-    /* O Menu Lateral */
     .menu-colapsavel {
         position: fixed;
         top: 0;
         right: 0;
-        width: 85%; /* Um pouco mais largo para acomodar melhor */
+        width: 85%;
         max-width: 320px;
         height: 100vh;
+        height: 100dvh; /* altura real da tela no celular */
         background-color: var(--cor-branco-puro);
         z-index: 200;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
-        padding: 1.5rem; /* Margens internas menores */
-        gap: 1.5rem;
+        padding: 0.75rem 1.25rem 1.25rem;
+        gap: 1rem;
         box-shadow: -5px 0 20px rgba(0,0,0,0.15);
-        transform: translateX(100%); 
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        
-        /* CORREÇÃO DO PROBLEMA 2: Habilita a rolagem interna do menu */
-        overflow-y: auto; 
+        transform: translateX(100%);
+        visibility: hidden;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s;
+        overflow-y: auto;
+        overscroll-behavior: contain; /* rolar o menu NÃO rola a página */
     }
 
     .menu-colapsavel.aberto {
         transform: translateX(0);
+        visibility: visible;
     }
 
-    /* CORREÇÃO DO PROBLEMA 1: Força o texto do menu lateral a ser escuro sempre, ignorando a cor do header */
+    /* Texto sempre escuro dentro do menu, mesmo com header escuro */
     header.cabecalho-principal.header-escuro .menu-colapsavel nav a,
-    header.cabecalho-principal.header-escuro .menu-colapsavel .btn-fechar-menu {
+    header.cabecalho-principal.header-escuro .menu-colapsavel nav a:hover,
+    header.cabecalho-principal.header-escuro .menu-colapsavel .btn-fechar-menu,
+    header.cabecalho-principal.header-escuro .menu-colapsavel form[role="search"] button {
         color: var(--cor-texto-primario) !important;
     }
 
-    /* Estiliza e ajusta o Botão Fechar (X) */
     .btn-fechar-menu {
         display: block;
         align-self: flex-end;
         background: transparent;
         border: none;
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+        line-height: 1;
         font-weight: bold;
         color: var(--cor-texto-primario);
         cursor: pointer;
-        padding: 10px; /* CORREÇÃO DO PROBLEMA 3: Aumenta a área de toque (Touch Target) do X */
-        margin-right: -10px; /* Compensa o padding visualmente */
+        padding: 10px;
+        margin-right: -10px;
     }
 
     header.cabecalho-principal nav ul {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1.5rem;
+        gap: 1rem;
         width: 100%;
     }
 
     header.cabecalho-principal form[role="search"] {
         width: 100%;
-        margin: 0.5rem 0;
+        margin: 0;
+        background-color: #fff;
     }
+    header.cabecalho-principal form[role="search"] input { width: 100%; }
 
-    header.cabecalho-principal form[role="search"] input {
-        width: 100%;
-    }
-
+    /* Login e Cadastro lado a lado, logo abaixo da busca */
     .auth-acoes {
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
-        margin-top: auto; 
-        padding-top: 2rem; /* Dá espaço para os botões rolarem bonitos no final */
+        margin-top: 0;
+        padding-top: 0;
+        gap: 0.75rem;
     }
-
     .auth-acoes .btn-link {
-        width: 100%;
+        flex: 1;
         text-align: center;
+        padding: 0.6rem 0.5rem;
+        border: 1px solid rgba(49, 39, 25, 0.15);
     }
 }
 
