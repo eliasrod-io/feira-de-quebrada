@@ -252,12 +252,12 @@ header.cabecalho-principal form[role="search"] button {
         display: block;
     }
 
-    /* O Menu Lateral que entra da direita para a esquerda */
+    /* O Menu Lateral */
     .menu-colapsavel {
         position: fixed;
         top: 0;
         right: 0;
-        width: 80%; /* Ocupa 80% da tela */
+        width: 85%; /* Um pouco mais largo para acomodar melhor */
         max-width: 320px;
         height: 100vh;
         background-color: var(--cor-branco-puro);
@@ -266,34 +266,40 @@ header.cabecalho-principal form[role="search"] button {
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
-        padding: 2rem 1.5rem;
-        gap: 2rem;
+        padding: 1.5rem; /* Margens internas menores */
+        gap: 1.5rem;
         box-shadow: -5px 0 20px rgba(0,0,0,0.15);
-        
-        /* Posiciona fora da tela inicialmente */
         transform: translateX(100%); 
         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        /* CORREÇÃO DO PROBLEMA 2: Habilita a rolagem interna do menu */
+        overflow-y: auto; 
     }
 
-    /* Classe que o Javascript ativa para puxar o menu pra dentro da tela */
     .menu-colapsavel.aberto {
         transform: translateX(0);
     }
 
-    /* Mostra e estiliza o botão fechar (X) */
+    /* CORREÇÃO DO PROBLEMA 1: Força o texto do menu lateral a ser escuro sempre, ignorando a cor do header */
+    header.cabecalho-principal.header-escuro .menu-colapsavel nav a,
+    header.cabecalho-principal.header-escuro .menu-colapsavel .btn-fechar-menu {
+        color: var(--cor-texto-primario) !important;
+    }
+
+    /* Estiliza e ajusta o Botão Fechar (X) */
     .btn-fechar-menu {
         display: block;
         align-self: flex-end;
         background: transparent;
         border: none;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         font-weight: bold;
         color: var(--cor-texto-primario);
         cursor: pointer;
-        margin-bottom: 1rem;
+        padding: 10px; /* CORREÇÃO DO PROBLEMA 3: Aumenta a área de toque (Touch Target) do X */
+        margin-right: -10px; /* Compensa o padding visualmente */
     }
 
-    /* Reorganização interna do menu no celular */
     header.cabecalho-principal nav ul {
         flex-direction: column;
         align-items: flex-start;
@@ -303,7 +309,7 @@ header.cabecalho-principal form[role="search"] button {
 
     header.cabecalho-principal form[role="search"] {
         width: 100%;
-        margin: 1rem 0;
+        margin: 0.5rem 0;
     }
 
     header.cabecalho-principal form[role="search"] input {
@@ -313,7 +319,8 @@ header.cabecalho-principal form[role="search"] button {
     .auth-acoes {
         flex-direction: column;
         width: 100%;
-        margin-top: auto; /* Empurra os botões de login pro final do menu */
+        margin-top: auto; 
+        padding-top: 2rem; /* Dá espaço para os botões rolarem bonitos no final */
     }
 
     .auth-acoes .btn-link {
