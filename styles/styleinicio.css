@@ -216,49 +216,112 @@ header.cabecalho-principal form[role="search"] button {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* COMPORTAMENTO DO HEADER NO MOBILE */
+/* ==========================================
+ * COMPORTAMENTO DO HEADER NO MOBILE (OFF-CANVAS)
+ * ========================================== */
+/* Fundo escuro atrás do menu lateral */
+.overlay-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 150;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay-menu.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Botão Fechar (X) escondido no PC */
+.btn-fechar-menu {
+    display: none; 
+}
+
 @media (max-width: 900px) {
     header.cabecalho-principal {
         padding: 1rem;
     }
 
     .btn-menu-mobile {
-        display: block; /* Mostra o botão hambúrguer no celular */
+        display: block;
     }
 
+    /* O Menu Lateral que entra da direita para a esquerda */
     .menu-colapsavel {
-        display: none; /* Esconde o menu por padrão no celular */
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80%; /* Ocupa 80% da tela */
+        max-width: 320px;
+        height: 100vh;
+        background-color: var(--cor-branco-puro);
+        z-index: 200;
+        display: flex;
         flex-direction: column;
-        width: 100%;
-        background-color: var(--cor-fundo-creme);
-        padding: 1.5rem 0;
-        border-radius: 12px;
-        margin-top: 1rem;
-        gap: 1.5rem;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 2rem 1.5rem;
+        gap: 2rem;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+        
+        /* Posiciona fora da tela inicialmente */
+        transform: translateX(100%); 
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* O script JS adiciona esta classe para mostrar o menu */
+    /* Classe que o Javascript ativa para puxar o menu pra dentro da tela */
     .menu-colapsavel.aberto {
-        display: flex;
+        transform: translateX(0);
+    }
+
+    /* Mostra e estiliza o botão fechar (X) */
+    .btn-fechar-menu {
+        display: block;
+        align-self: flex-end;
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--cor-texto-primario);
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
+
+    /* Reorganização interna do menu no celular */
+    header.cabecalho-principal nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        width: 100%;
     }
 
     header.cabecalho-principal form[role="search"] {
-        order: 3;
-        width: 90%;
-        justify-content: center;
+        width: 100%;
+        margin: 1rem 0;
     }
 
     header.cabecalho-principal form[role="search"] input {
         width: 100%;
-        flex: 1;
     }
 
-    header.cabecalho-principal nav ul {
+    .auth-acoes {
         flex-direction: column;
-        align-items: center;
-        gap: 1rem;
+        width: 100%;
+        margin-top: auto; /* Empurra os botões de login pro final do menu */
+    }
+
+    .auth-acoes .btn-link {
+        width: 100%;
+        text-align: center;
     }
 }
+
 
 /* ==========================================
  * 3. MENU DROPDOWN (BALÃO DE CATEGORIAS)
