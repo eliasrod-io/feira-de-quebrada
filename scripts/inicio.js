@@ -170,37 +170,49 @@
 /* =======================================================================
  * MENU SANDUÍCHE LATERAL (OFF-CANVAS) - ATUALIZADO
  * ======================================================================= */
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function () {
     const btnMenu = document.getElementById('btn-menu-mobile');
-    const menuColapsavel = document.getElementById('menu-colapsavel');
+    const menu = document.getElementById('menu-colapsavel');
     const btnFechar = document.getElementById('btn-fechar-menu');
     const overlay = document.getElementById('overlay-menu');
 
-    if (!btnMenu || !menuColapsavel) return;
+    if (!btnMenu || !menu) return;
 
-    function alternarMenu() {
-        // Abre ou fecha o menu lateral
-        menuColapsavel.classList.toggle('aberto');
-        
-        // Mostra ou esconde o fundo escuro
-        if (overlay) {
-            overlay.classList.toggle('ativo');
-        }
-        
-        // CORREÇÃO DO PROBLEMA 4: Trava a rolagem do corpo da página e do HTML inteiro
-        if (menuColapsavel.classList.contains('aberto')) {
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden'; 
-        } else {
-            // Destrava a rolagem quando fecha o menu
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
-        }
+    function abrirMenu() {
+        menu.classList.add('aberto');
+        if (overlay) overlay.classList.add('ativo');
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        document.body.style.overscrollBehavior = 'none';
+        btnMenu.setAttribute('aria-expanded', 'true');
     }
 
-    // CORREÇÃO DO PROBLEMA 3: Usa .onclick direto para evitar cliques duplicados ou não registrados
-    btnMenu.onclick = alternarMenu;
-    if (btnFechar) btnFechar.onclick = alternarMenu;
-    if (overlay) overlay.onclick = alternarMenu;
-});
+    function fecharMenu() {
+        menu.classList.remove('aberto');
+        if (overlay) overlay.classList.remove('ativo');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.body.style.overscrollBehavior = '';
+        btnMenu.setAttribute('aria-expanded', 'false');
+    }
 
+    btnMenu.addEventListener('click', abrirMenu);
+    if (btnFechar) btnFechar.addEventListener('click', fecharMenu);
+    if (overlay) overlay.addEventListener('click', fecharMenu);
+
+    // Fecha ao tocar em um link real (não no "Categorias", que só abre o dropdown)
+    menu.addEventListener('click', function (e) {
+        const link = e.target.closest('a');
+        if (link && link.id !== 'btn-categorias') fecharMenu();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') fecharMenu();
+    });
+
+    // Se virar desktop com o menu aberto, destrava a página
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 900) fecharMenu();
+    });
+});
