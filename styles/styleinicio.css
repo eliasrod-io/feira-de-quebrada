@@ -118,7 +118,6 @@ header.cabecalho-principal {
 
     &.header-escuro nav a { color: var(--cor-branco-puro); }
     &.header-escuro nav a:hover { color: var(--cor-bege-destaque); }
-    &.header-escuro .auth-acoes .btn-link:first-child { color: var(--cor-branco-puro); }
     
     &.header-escuro a:focus-visible,
     &.header-escuro button:focus-visible,
@@ -173,22 +172,30 @@ header.cabecalho-principal {
         font-weight: 700;
     }
 
+    /* ==========================================
+     * AJUSTE DOS BOTÕES DE LOGIN E CADASTRO
+     * ========================================== */
     & .auth-acoes {
         display: flex;
         align-items: center;
         gap: 1rem;
     }
 
-    & .auth-acoes .btn-link:first-child {
-        color: var(--cor-branco-puro);
-    }
-
-    & .auth-acoes .btn-link:last-child {
+    /* Aplica o fundo e padroniza a cor do texto para AMBOS os botões */
+    & .auth-acoes .btn-link {
         background-color: var(--cor-branco-puro);
+        color: var(--cor-texto-primario) !important; /* Força o texto escuro mesmo quando o cabeçalho muda de cor */
         padding: 0.5rem 1.25rem;
         border-radius: 9999px;
         font-weight: 700;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: transform var(--transicao-padrao), box-shadow var(--transicao-padrao);
+    }
+
+    /* Efeito de elevação ao passar o rato (hover) */
+    & .auth-acoes .btn-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     }
 
     @media (max-width: 900px) {
@@ -217,6 +224,7 @@ header.cabecalho-principal {
         }
     }
 }
+
 
 /* ==========================================
  * 3. MENU DROPDOWN (BALÃO DE CATEGORIAS)
