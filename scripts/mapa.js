@@ -1,7 +1,16 @@
+/* =======================================================================
+ * MAPA INTERATIVO (LEAFLET.JS) E LISTAGEM DE EMPREENDEDORES
+ * ======================================================================= */
+
 document.addEventListener('DOMContentLoaded', () => { 
+    
+    // ==========================================
+    // 1. VARIÁVEIS GLOBAIS E DADOS (MOCK)
+    // ==========================================
     const listaEmpreendedoresEl = document.getElementById('listaEmpreendedores'); 
     let mapaInstancia = null; 
 
+    // Array simulando o retorno de um banco de dados (Firebase/API)
     const empreendedores = [ 
         {
             nome: "Corte & Estilo - Barbearia", 
@@ -50,50 +59,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    // ==========================================
+    // 2. RENDERIZAÇÃO DA BARRA LATERAL (LISTA)
+    // ==========================================
     function renderizarListaLateral() { 
-    if (!listaEmpreendedoresEl) return; 
-    listaEmpreendedoresEl.innerHTML = ''; 
+        if (!listaEmpreendedoresEl) return; 
+        
+        // Limpa a lista antes de renderizar para evitar duplicações
+        listaEmpreendedoresEl.innerHTML = ''; 
 
-    empreendedores.forEach(emp => { 
-        const card = document.createElement('div'); 
-        card.className = 'card-empreendedor'; 
+        empreendedores.forEach(emp => { 
+            const card = document.createElement('div'); 
+            card.className = 'card-empreendedor'; 
 
-        const badgeDistancia = emp.distanciaKm 
-            ? `<span class="badge-distancia">📏 a ${emp.distanciaKm} km</span>` 
-            : '';
+            // Adiciona o selo de distância apenas se a geolocalização do usuário estiver ativa
+            const badgeDistancia = emp.distanciaKm 
+                ? `<span class="badge-distancia">📏 a ${emp.distanciaKm} km</span>` 
+                : '';
 
-        card.innerHTML = `
-            <div class="card-header-estab">
-                <img src="${emp.logo}" class="logo-estab-img" alt="Logo ${emp.nome}" onerror="this.src='https://via.placeholder.com/40';">
-                <div class="estab-info-titulo">
-                    <h5>${emp.nome}</h5>
-                    ${badgeDistancia}
+            card.innerHTML = `
+                <div class="card-header-estab">
+                    <img src="${emp.logo}" class="logo-estab-img" alt="Logo ${emp.nome}" onerror="this.src='https://via.placeholder.com/40';">
+                    <div class="estab-info-titulo">
+                        <h5>${emp.nome}</h5>
+                        ${badgeDistancia}
+                    </div>
                 </div>
-            </div>
-            <p>📍 ${emp.bairro} • <i>${emp.categoria}</i></p>
-            <a href="${emp.linkWhats}" target="_blank" class="btn-whats" onclick="event.stopPropagation();">Chamar no WhatsApp</a>
-        `; 
+                <p>📍 ${emp.bairro} • <i>${emp.categoria}</i></p>
+                <a href="${emp.linkWhats}" target="_blank" class="btn-whats" onclick="event.stopPropagation();">Chamar no WhatsApp</a>
+            `; 
 
-        card.addEventListener('click', () => { 
-            if (mapaInstancia) {
-                mapaInstancia.setView([emp.lat, emp.lng], 15); 
-            }
+            // Evento de clique no card para centralizar o mapa na coordenada do estabelecimento
+            card.addEventListener('click', () => { 
+                if (mapaInstancia) {
+                    mapaInstancia.setView([emp.lat, emp.lng], 15); 
+                }
+            });
+
+            listaEmpreendedoresEl.appendChild(card); 
         });
+    }
 
-        listaEmpreendedoresEl.appendChild(card); 
-    });
-}
-
+    // ==========================================
+    // 3. INICIALIZAÇÃO DO MAPA (LEAFLET)
+    // ==========================================
     function inicializarMapa() { 
         const mapaDiv = document.getElementById('mapa');
         if (!mapaDiv) return;
 
+        // Define a visualização inicial (Coordenadas padrão)
         mapaInstancia = L.map('mapa').setView([-23.65, -46.75], 13); 
 
+        // Carrega os blocos visuais do mapa via OpenStreetMap (Gratuito e Open Source)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' 
         }).addTo(mapaInstancia); 
 
+        // ==========================================
+        // 3.1 AGRUPAMENTO DE PINOS POR BAIRRO
+        // ==========================================
         const gruposPorBairro = {}; 
 
         empreendedores.forEach(emp => { 
@@ -108,9 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
             gruposPorBairro[emp.bairro].lista.push(emp); 
         });
 
+        // ==========================================
+        // 3.2 DESENHO DOS CÍRCULOS E POPUPS NO MAPA
+        // ==========================================
         Object.values(gruposPorBairro).forEach(grupo => { 
             const qtd = grupo.lista.length; 
 
+            // Cria um círculo representando a concentração de comércios no bairro
             const circuloBairro = L.circle([grupo.lat, grupo.lng], { 
                 color: '#e53935', 
                 fillColor: '#ef5350',
@@ -119,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 radius: 450 
             }).addTo(mapaInstancia); 
 
+            // Monta o HTML do balão (popup) que abre ao clicar no círculo
             let htmlConteudo = `
                 <div style="text-align:center; font-family: 'Poppins', sans-serif; padding: 4px; max-height: 250px; overflow-y: auto;">
                     <h4 style="margin:0 0 2px 0; color:#1a1a1a; font-size:14px; font-weight:600;">📍 ${grupo.bairro}</h4>
@@ -145,14 +174,19 @@ document.addEventListener('DOMContentLoaded', () => {
             circuloBairro.bindPopup(htmlConteudo); 
         });
 
+        // ==========================================
+        // 4. GEOLOCALIZAÇÃO DO USUÁRIO (API DO NAVEGADOR)
+        // ==========================================
         if ("geolocation" in navigator) { 
             navigator.geolocation.getCurrentPosition( 
                 (pos) => { 
                     const lat = pos.coords.latitude; 
                     const lng = pos.coords.longitude;
 
+                    // Centraliza o mapa na posição atual do usuário
                     mapaInstancia.setView([lat, lng], 14); 
 
+                    // Adiciona um marcador azul para identificar o usuário
                     L.marker([lat, lng]).addTo(mapaInstancia) 
                         .bindPopup("📍 <b>Você está aqui!</b>") 
                         .openPopup(); 
@@ -164,12 +198,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         radius: 100 
                     }).addTo(mapaInstancia); 
 
+                    // Calcula a distância do usuário para cada estabelecimento
                     const pontoUsuario = L.latLng(lat, lng); 
                     empreendedores.forEach(emp => { 
                         const pontoLoja = L.latLng(emp.lat, emp.lng); 
+                        // Calcula e formata a distância para quilômetros
                         emp.distanciaKm = (pontoUsuario.distanceTo(pontoLoja) / 1000).toFixed(1); 
                     });
+                    
+                    // Ordena a lista do mais próximo ao mais distante
                     empreendedores.sort((a, b) => parseFloat(a.distanciaKm) - parseFloat(b.distanciaKm));
+                    
+                    // Re-renderiza a barra lateral agora com as distâncias calculadas
                     renderizarListaLateral();
                 },
                 (err) => console.warn("Geolocalização indisponível:", err.message), 
@@ -177,9 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         }
 
+        // Corrige possíveis bugs de renderização do tamanho do Leaflet em containers dinâmicos
         setTimeout(() => mapaInstancia.invalidateSize(), 300); 
     }
 
+    // ==========================================
+    // 5. EXECUÇÃO INICIAL
+    // ==========================================
     inicializarMapa(); 
     renderizarListaLateral(); 
 });

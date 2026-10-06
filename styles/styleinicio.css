@@ -1,3 +1,10 @@
+/* =======================================================================
+ * ESTILOS GLOBAIS E PÁGINA INICIAL (INDEX)
+ * ======================================================================= */
+
+/* ==========================================
+ * 1. FONTES E VARIÁVEIS GLOBAIS
+ * ========================================== */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap');
 
 :root {
@@ -12,12 +19,13 @@
     --cor-bege-destaque: #FFE4BD;
     --cor-branco-puro: #f1f1f1;
 
+    /* Medidas */
     --largura-maxima-conteudo: 1200px;
     --raio-borda-padrao: 16px;
     --transicao-padrao: 0.25s ease-in-out;
 }
 
-/* Reset global de espaçamento e box model */
+/* Reset global */
 *,
 *::before,
 *::after {
@@ -40,9 +48,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Resets específicos de elementos estruturais */
-ul,
-ol {
+ul, ol {
     list-style: none;
 }
 
@@ -57,16 +63,12 @@ img {
     height: auto;
 }
 
-button,
-input {
+button, input {
     font-family: inherit;
     font-size: inherit;
 }
 
-/* Indicador de foco visível para navegação via teclado (WCAG 2.4.7).
-   O outline é definido de forma global e sobrescrito com uma cor clara
-   apenas dentro do header quando ele está no estado escuro, garantindo
-   contraste em ambos os fundos. */
+/* Acessibilidade: Indicador de foco */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
@@ -75,20 +77,12 @@ input:focus-visible {
     border-radius: 4px;
 }
 
-/* Suporte à preferência do sistema por movimento reduzido.
-   Usuários que ativam essa opção no sistema operacional costumam ter
-   sensibilidade a animações (enjoo, distração, condições vestibulares).
-   Em vez de reescrever cada transição individualmente, neutralizamos
-   globalmente animações, transições e a rolagem suave — a troca
-   automática do carrossel é tratada à parte, em JavaScript. */
+/* Acessibilidade: Movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
     }
-
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -96,9 +90,9 @@ input:focus-visible {
     }
 }
 
-/* ==========================================================================
-   CABEÇALHO
-   ========================================================================== */
+/* ==========================================
+ * 2. CABEÇALHO (HEADER)
+ * ========================================== */
 header.cabecalho-principal {
     position: fixed;
     top: 0;
@@ -116,39 +110,28 @@ header.cabecalho-principal {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     transition: background-color var(--transicao-padrao), backdrop-filter var(--transicao-padrao);
 
-    /* Estado escuro, aplicado via JS ao sair da área do hero */
     &.header-escuro {
         background-color: rgba(49, 39, 25, 0.85);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
     }
 
-    &.header-escuro nav a {
-        color: var(--cor-branco-puro);
-    }
-
-    &.header-escuro nav a:hover {
-        color: var(--cor-bege-destaque);
-    }
-
-    &.header-escuro .auth-acoes .btn-link:first-child {
-        color: var(--cor-branco-puro);
-    }
-
+    &.header-escuro nav a { color: var(--cor-branco-puro); }
+    &.header-escuro nav a:hover { color: var(--cor-bege-destaque); }
+    &.header-escuro .auth-acoes .btn-link:first-child { color: var(--cor-branco-puro); }
+    
     &.header-escuro a:focus-visible,
     &.header-escuro button:focus-visible,
     &.header-escuro input:focus-visible {
         outline-color: var(--cor-branco-puro);
     }
 
-    /* Logomarca */
     & .logo img {
         height: 48px;
         width: auto;
         object-fit: contain;
     }
 
-    /* Menu de navegação */
     & nav ul {
         display: flex;
         gap: 1.5rem;
@@ -165,7 +148,6 @@ header.cabecalho-principal {
         opacity: 0.7;
     }
 
-    /* Formulário de busca */
     & form[role="search"] {
         display: flex;
         align-items: center;
@@ -191,7 +173,6 @@ header.cabecalho-principal {
         font-weight: 700;
     }
 
-    /* Área de autenticação */
     & .auth-acoes {
         display: flex;
         align-items: center;
@@ -210,16 +191,40 @@ header.cabecalho-principal {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     }
 
-    /* ==========================================================================
-   MENU DROPDOWN (BALÃOZINHO DE CATEGORIAS)
-   ========================================================================== */
+    @media (max-width: 900px) {
+        & form[role="search"] {
+            order: 3;
+            width: 100%;
+            justify-content: center;
+        }
+        & form[role="search"] input {
+            width: 100%;
+            flex: 1;
+        }
+    }
 
-/* Contêiner principal do dropdown */
-.menu-dropdown {
-    position: relative; /* Define que o balãozinho flutuante ficará posicionado em relação a este item */
+    @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem 1.25rem;
+
+        & nav ul {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        & .auth-acoes {
+            justify-content: center;
+        }
+    }
 }
 
-/* O corpo do balãozinho */
+/* ==========================================
+ * 3. MENU DROPDOWN (BALÃO DE CATEGORIAS)
+ * ========================================== */
+.menu-dropdown {
+    position: relative; 
+}
+
 .dropdown-balao {
     position: absolute;
     top: 150%; 
@@ -233,114 +238,45 @@ header.cabecalho-principal {
     flex-direction: column;
     z-index: 200; 
     transition: opacity var(--transicao-padrao), transform var(--transicao-padrao);
-    
-    /* ======== NOVAS REGRAS PARA A ROLAGEM ======== */
-    /* Cada item tem cerca de 42px de altura. 
-       220px é suficiente para mostrar as 5 primeiras opções 
-       e um "pedacinho" da 6ª, dando a dica visual de que dá para rolar! */
     max-height: 220px; 
-    
-    /* Se o conteúdo passar de 220px, cria uma barra de rolagem vertical */
     overflow-y: auto; 
 }
 
-/* ==========================================================================
-   ESTILIZAÇÃO DA BARRA DE ROLAGEM DO BALÃOZINHO (Design Moderno)
-   ========================================================================== */
-/* Largura da barra de rolagem */
-.dropdown-balao::-webkit-scrollbar {
-    width: 6px; 
-}
+.dropdown-balao::-webkit-scrollbar { width: 6px; }
+.dropdown-balao::-webkit-scrollbar-track { background: var(--cor-branco-puro); border-radius: var(--raio-borda-padrao); }
+.dropdown-balao::-webkit-scrollbar-thumb { background: #cccccc; border-radius: var(--raio-borda-padrao); }
+.dropdown-balao::-webkit-scrollbar-thumb:hover { background: #aaaaaa; }
 
-/* O fundo (trilho) da barra de rolagem */
-.dropdown-balao::-webkit-scrollbar-track {
-    background: var(--cor-branco-puro); 
-    border-radius: var(--raio-borda-padrao);
-}
-
-/* A parte que o utilizador clica e arrasta (o polegar) */
-.dropdown-balao::-webkit-scrollbar-thumb {
-    background: #cccccc; /* Uma cor cinza neutra */
-    border-radius: var(--raio-borda-padrao);
-}
-
-/* Quando o utilizador passa o rato em cima da barra de rolagem */
-.dropdown-balao::-webkit-scrollbar-thumb:hover {
-    background: #aaaaaa; /* Fica um pouco mais escura */
-}
-
-/* Classe utilizada pelo JavaScript para esconder o menu */
 .dropdown-balao.escondido {
     display: none !important;
     opacity: 0;
-    transform: translateY(-10px); /* Efeito suave de subida ao fechar */
+    transform: translateY(-10px); 
 }
 
-/* Classe utilizada pelo JavaScript para mostrar o menu */
 .dropdown-balao.mostrar {
     display: flex !important;
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Estilo de cada item/link dentro do balãozinho */
-.dropdown-balao li {
-    width: 100%;
-}
+.dropdown-balao li { width: 100%; }
 
 .dropdown-balao a {
     display: block;
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
     font-weight: 500;
-    
-    /* Forçamos a cor escura e removemos as regras de hover antigas para os itens internos do balão */
     color: var(--cor-texto-primario) !important; 
 }
 
-/* Efeito ao passar o rato (hover) apenas nos itens internos do balãozinho */
 .dropdown-balao a:hover {
     background-color: var(--cor-card-bege);
     opacity: 1 !important;
 }
 
-    /* Em telas médias, a busca cede a primeira linha ao menu e ao acesso,
-       evitando que tudo se comprima numa única linha */
-    @media (max-width: 900px) {
-        & form[role="search"] {
-            order: 3;
-            width: 100%;
-            justify-content: center;
-        }
-
-        & form[role="search"] input {
-            width: 100%;
-            flex: 1;
-        }
-    }
-
-    /* Em telas pequenas, empilha logo / menu / busca / acesso verticalmente */
-    @media (max-width: 640px) {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 1rem 1.25rem;
-
-        & nav ul {
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        & .auth-acoes {
-            justify-content: center;
-        }
-    }
-}
-
-/* ==========================================================================
-   SEÇÃO HERO / CARROSSEL
-   ========================================================================== */
-
-/* Contêiner principal: âncora de posicionamento das camadas do carrossel */
+/* ==========================================
+ * 4. SEÇÃO HERO (CARROSSEL)
+ * ========================================== */
 .hero-carrossel {
     position: relative;
     width: 100%;
@@ -349,19 +285,13 @@ header.cabecalho-principal {
     align-items: center;
     padding-top: 120px;
     overflow: hidden;
-    /* Cor de fallback enquanto as imagens carregam. Usa um tom já existente
-       na paleta (creme de fundo) em vez de uma cor solta, mantendo
-       consistência visual com o restante do site. */
     background-color: var(--cor-fundo-creme);
 }
 
 @media (max-width: 640px) {
-    .hero-carrossel {
-        padding-top: 160px;
-    }
+    .hero-carrossel { padding-top: 160px; }
 }
 
-/* Camada de mídias (background) */
 .carrossel-slides {
     position: absolute;
     top: 0;
@@ -393,7 +323,6 @@ header.cabecalho-principal {
     object-position: center;
 }
 
-/* Botão de pausa do carrossel, inserido dinamicamente via JavaScript */
 .carrossel-botao-pausa {
     position: absolute;
     z-index: 20;
@@ -416,7 +345,6 @@ header.cabecalho-principal {
     transform: translateY(-2px);
 }
 
-/* Conteúdo textual em primeiro plano */
 .hero-conteudo {
     position: relative;
     z-index: 10;
@@ -437,7 +365,6 @@ header.cabecalho-principal {
     margin-bottom: 2rem;
 }
 
-/* Botões de chamada para ação */
 .hero-botoes {
     display: flex;
     gap: 1.25rem;
@@ -470,9 +397,9 @@ header.cabecalho-principal {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
-/* ==========================================================================
-   SEÇÃO PROFISSÕES
-   ========================================================================== */
+/* ==========================================
+ * 5. SEÇÃO DE PROFISSÕES
+ * ========================================== */
 .secao-profissoes {
     padding: 5rem 2.5rem;
     background-color: var(--cor-fundo-creme);
@@ -527,22 +454,14 @@ header.cabecalho-principal {
 }
 
 @media (max-width: 900px) {
-    .profissoes-container {
-        grid-template-columns: 1fr;
-    }
-
-    .profissoes-galeria {
-        flex-wrap: wrap;
-    }
-
-    .galeria-item {
-        flex-basis: calc(50% - 0.5rem);
-    }
+    .profissoes-container { grid-template-columns: 1fr; }
+    .profissoes-galeria { flex-wrap: wrap; }
+    .galeria-item { flex-basis: calc(50% - 0.5rem); }
 }
 
-/* ==========================================================================
-   SEÇÃO CATEGORIAS POPULARES
-   ========================================================================== */
+/* ==========================================
+ * 6. SEÇÃO DE CATEGORIAS POPULARES
+ * ========================================== */
 .secao-categorias {
     padding: 5rem 2.5rem;
     background-color: var(--cor-fundo-creme);
@@ -585,21 +504,9 @@ header.cabecalho-principal {
     transition: transform var(--transicao-padrao), box-shadow var(--transicao-padrao);
 }
 
-.categoria-card img {
-    margin-bottom: 0.85rem;
-}
-
-.categoria-card h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-}
-
-.categoria-card span {
-    font-size: 0.8rem;
-    color: var(--cor-texto-secundario);
-    opacity: 0.65;
-}
+.categoria-card img { margin-bottom: 0.85rem; }
+.categoria-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+.categoria-card span { font-size: 0.8rem; color: var(--cor-texto-secundario); opacity: 0.65; }
 
 .categoria-card a:hover {
     transform: translateY(-4px);
@@ -607,18 +514,13 @@ header.cabecalho-principal {
 }
 
 @media (max-width: 900px) {
-    .categorias-container {
-        grid-template-columns: 1fr;
-    }
-
-    .categorias-lista {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .categorias-container { grid-template-columns: 1fr; }
+    .categorias-lista { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ==========================================================================
-   SEÇÃO SOBRE
-   ========================================================================== */
+/* ==========================================
+ * 7. SEÇÃO SOBRE NÓS
+ * ========================================== */
 .secao-sobre {
     padding: 4rem 2.5rem;
     background-color: var(--cor-fundo-creme);
@@ -644,38 +546,91 @@ header.cabecalho-principal {
     border-radius: var(--raio-borda-padrao);
 }
 
-.sobre-texto h2 {
-    font-size: 2rem;
-    margin-bottom: 1.25rem;
-}
-
+.sobre-texto h2 { font-size: 2rem; margin-bottom: 1.25rem; }
 .sobre-texto p {
     font-size: 0.95rem;
     line-height: 1.65;
     color: var(--cor-texto-secundario);
     margin-bottom: 1rem;
 }
-
-.sobre-texto p:last-child {
-    margin-bottom: 0;
-}
+.sobre-texto p:last-child { margin-bottom: 0; }
 
 @media (max-width: 900px) {
-    .sobre-container {
-        grid-template-columns: 1fr;
-    }
+    .sobre-container { grid-template-columns: 1fr; }
 }
 
-/* ==========================================================================
-   SEÇÃO MAPA
-   ========================================================================== */
+/* ==========================================
+ * 8. DADOS E ESTATÍSTICAS
+ * ========================================== */
+.container-dados {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    background-color: #FFF3E4; 
+    border-radius: 12px;
+}
+
+.dados {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.contas {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.icone-bg {
+    width: 65px;
+    height: 65px;
+    background-color: #FFEDD5; 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.contas img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.contas h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #2B2B2B;
+}
+
+.contas p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555555;
+    font-weight: 400;
+}
+
+/* ==========================================
+ * 9. SEÇÃO DO MAPA INTERATIVO (CHAMADA)
+ * ========================================== */
 .secao-mapa {
     position: relative;
     min-height: 480px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('imagens/bandeirinhas.jpg');
+    
+    /* CAMINHO CORRIGIDO: O CSS precisou sair da pasta styles/ e entrar na pasta imagens/ */
+    background-image: url('../imagens/bandeirinhas.jpg');
+    
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -706,11 +661,7 @@ header.cabecalho-principal {
     margin-bottom: 0.75rem;
 }
 
-.mapa-card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-}
-
+.mapa-card h2 { font-size: 1.5rem; margin-bottom: 0.75rem; }
 .mapa-card p {
     font-size: 0.9rem;
     color: var(--cor-texto-secundario);
@@ -731,12 +682,10 @@ header.cabecalho-principal {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
-/* ==========================================================================
-   RODAPÉ
-   ========================================================================== */
-.rodape-principal {
-    background-color: var(--cor-card-bege);
-}
+/* ==========================================
+ * 10. RODAPÉ (FOOTER)
+ * ========================================== */
+.rodape-principal { background-color: var(--cor-card-bege); }
 
 .rodape-container {
     max-width: var(--largura-maxima-conteudo);
@@ -744,13 +693,8 @@ header.cabecalho-principal {
     padding: 3rem 2.5rem;
 }
 
-.rodape-marca {
-    max-width: 420px;
-}
-
-.rodape-logo-link img {
-    margin-bottom: 1rem;
-}
+.rodape-marca { max-width: 420px; }
+.rodape-logo-link img { margin-bottom: 1rem; }
 
 .rodape-marca p {
     font-size: 0.9rem;
@@ -775,9 +719,7 @@ header.cabecalho-principal {
     transition: transform var(--transicao-padrao);
 }
 
-.rodape-redes a:hover {
-    transform: translateY(-2px);
-}
+.rodape-redes a:hover { transform: translateY(-2px); }
 
 .rodape-copyright {
     background-color: var(--cor-bege-destaque);
@@ -788,61 +730,4 @@ header.cabecalho-principal {
 .rodape-copyright small {
     font-size: 0.8rem;
     color: var(--cor-texto-secundario);
-}
-.container-dados {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 40px 30px;
-    background-color: #FFF3E4; /* Fundo bege suave do container */
-    border-radius: 12px;
-}
-
-.dados {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.contas {
-    flex: 1;
-    min-width: 160px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-/* Círculo de fundo ao redor do ícone */
-.icone-bg {
-    width: 65px;
-    height: 65px;
-    background-color: #FFEDD5; /* Bege um pouco mais escuro para o círculo */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-
-/* Ícone menor centralizado */
-.contas img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-
-.contas h3 {
-    margin: 0 0 4px 0;
-    font-size: 1.6rem;
-    font-weight: 500;
-    color: #2B2B2B;
-}
-
-.contas p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #555555;
-    font-weight: 400;
 }

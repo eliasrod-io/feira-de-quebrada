@@ -1,9 +1,12 @@
-
+/* =======================================================================
+ * PERSONA FEY: CLASSE E LÓGICA DE RESPOSTAS
+ * ======================================================================= */
 class PersonaJessica {
     constructor() {
         this.nomeUsuario = "";
         this.esperandoNome = true;
 
+        // Banco de intenções e respostas baseadas em Expressões Regulares (Regex)
         this.respostas = [
             { 
                 match: /\b(oi|olá|ola|hi|hello|salve|eai|eaí|boa tarde|bom dia|boa noite|oii)\b/i, 
@@ -38,10 +41,6 @@ class PersonaJessica {
                 reply: (n) => `Sobre as entregas, ${n}:\n\nA Feira da Quebrada conecta você direto ao vendedor! A forma de envio ou retirada (em mãos, motoboy, etc.) é combinada diretamente entre vocês pelo WhatsApp.` 
             },
             { 
-                match: /\b(pagamento|pagar|forma de pagamento|cartao|cartão|dinheiro|aceita pix)\b/i, 
-                reply: (n) => `As formas de pagamento são combinadas direto com o empreendedor, ${n}! Geralmente aceitam Pix, dinheiro e cartão na hora da entrega.` 
-            },
-            { 
                 match: /\b(editar|mudar|alterar|atualizar|foto|produto|produtos|anuncio|anúncio)\b/i, 
                 reply: (n) => `Para atualizar seus produtos ou informações, ${n}:\n\n1. Faça login na sua conta;\n2. Vá no seu 'Painel do Empreendedor';\n3. Clique em 'Meus Produtos' para editar fotos, descrições.` 
             },
@@ -64,10 +63,6 @@ class PersonaJessica {
             { 
                 match: /\b(perfil suspeito|fraude no perfil|denunciar loja)\b/i, 
                 reply: (n) => `Se notar algum perfil estranho ou atitude suspeita, envie uma mensagem para o nosso suporte pelo formulário 'Fale Conosco', ${n}!` 
-            },
-            { 
-                match: /\b(editar|mudar|alterar|atualizar|foto|produto|produtos|anuncio|anúncio)\b/i, 
-                reply: (n) => `Para atualizar seus produtos ou informações, ${n}:\n\n1. Faça login na sua conta;\n2. Vá no seu 'Painel do Empreendedor';\n3. Clique em 'Meus Produtos' para editar fotos, descrições.` 
             },
             { 
                 match: /\b(esqueci senha|recuperar senha|mudar senha|trocar senha|senha)\b/i, 
@@ -116,10 +111,11 @@ class PersonaJessica {
             { 
                 match: /\b(acessibilidade|leitor de tela|contraste|escuro|modo escuro)\b/i, 
                 reply: (n) => `Estamos trabalhando para implementar opções de alto contraste e melhorias para leitores de tela em breve, ${n}!` 
-            },
+            }
         ];
     }
 
+    // Processa a mensagem do usuário e devolve a resposta adequada
     responder(mensagem) {
         const texto = mensagem.trim();
 
@@ -141,7 +137,12 @@ class PersonaJessica {
     }
 }
 
+/* =======================================================================
+ * CONTROLE DA INTERFACE (DOM) DO CHAT WIDGET
+ * ======================================================================= */
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // Mapeamento de elementos
     const chatToggle = document.getElementById('chatToggle');
     const chatWidget = document.getElementById('chatWidget');
     const closeChat = document.getElementById('closeChat');
@@ -149,8 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chatBox');
     const submitBtn = document.getElementById('submitBtn');
 
+    // Instanciação da assistente
     const jessica = new PersonaJessica();
 
+    // Função para renderizar as mensagens na tela
     function adicionarBolha(papel, texto) {
         if (!chatBox) return;
         const bolha = document.createElement('div');
@@ -160,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
+    // Função para exibir o indicador de 'digitando...'
     function mostrarDigitando() {
         const indicador = document.createElement('div');
         indicador.classList.add('bubble', 'assistant', 'typing-dots');
@@ -169,10 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return indicador;
     }
 
+    // Inicializa a primeira mensagem caso o chat esteja vazio
     if (chatBox && chatBox.children.length === 0) {
         adicionarBolha('assistant', 'Olá! Sou a Fey, assistente virtual da Feira da Quebrada.\n\nAntes de começarmos, qual é o seu nome?');
     }
 
+    // Eventos de Abertura/Fechamento do Chat
     if (chatToggle && chatWidget) {
         chatToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -191,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Lógica de Envio de Mensagem
     function enviarMensagem() {
         if (!messageInput) return;
         const texto = messageInput.value.trim();
@@ -202,12 +209,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const indicador = mostrarDigitando();
         const resposta = jessica.responder(texto);
 
+        // Simula o tempo de digitação (700ms)
         setTimeout(() => {
             if (indicador) indicador.remove();
             adicionarBolha('assistant', resposta);
         }, 700);
     }
 
+    // Eventos de Input (Click e Enter)
     if (submitBtn) submitBtn.addEventListener('click', enviarMensagem);
 
     if (messageInput) {
@@ -218,28 +227,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-const helpTooltip = document.getElementById('chatHelpTooltip');
-const chatWidgetRef = document.getElementById('chatWidget');
 
-function exibirNotificacaoAjuda() {
-    if (helpTooltip && chatWidgetRef && chatWidgetRef.classList.contains('hidden')) {
-        helpTooltip.classList.add('show');
+    /* =======================================================================
+     * CONTROLE DO TOOLTIP (BALÃO DE AJUDA)
+     * ======================================================================= */
+    const helpTooltip = document.getElementById('chatHelpTooltip');
+    const chatWidgetRef = document.getElementById('chatWidget');
 
-        setTimeout(() => {
-            helpTooltip.classList.remove('show');
-        }, 6000);
+    function exibirNotificacaoAjuda() {
+        if (helpTooltip && chatWidgetRef && chatWidgetRef.classList.contains('hidden')) {
+            helpTooltip.classList.add('show');
+
+            setTimeout(() => {
+                helpTooltip.classList.remove('show');
+            }, 6000); // Exibe por 6 segundos
+        }
     }
-}
 
-// 5 segundos da página carregar
-setTimeout(exibirNotificacaoAjuda, 5000);
+    // Exibe a notificação 5 segundos após a página carregar
+    setTimeout(exibirNotificacaoAjuda, 5000);
 
-// aviso a cada 2 minutos 
-setInterval(exibirNotificacaoAjuda, 120000);
+    // Reexibe a notificação a cada 2 minutos caso o chat esteja fechado
+    setInterval(exibirNotificacaoAjuda, 120000);
 
-if (chatToggle) {
-    chatToggle.addEventListener('click', () => {
-        if (helpTooltip) helpTooltip.classList.remove('show');
-    });
-}
+    // Oculta o tooltip permanentemente se o usuário clicar para abrir o chat
+    if (chatToggle) {
+        chatToggle.addEventListener('click', () => {
+            if (helpTooltip) helpTooltip.classList.remove('show');
+        });
+    }
 });

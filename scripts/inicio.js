@@ -1,10 +1,9 @@
-// ============================================================================
-// Carrossel do Hero
-// ============================================================================
-// Alterna os slides automaticamente a cada INTERVALO_SLIDE_MS, expõe controle
-// de pausa/retomada ao usuário e respeita a preferência do sistema por
-// movimento reduzido (prefers-reduced-motion), além de suspender a troca
-// automática quando a aba está em segundo plano.
+/* =======================================================================
+ * CARROSSEL DO HERO (DESTAQUES)
+ * ======================================================================= */
+// Alterna os slides automaticamente, expõe controle de pausa/retomada ao usuário,
+// respeita a preferência do sistema por movimento reduzido (prefers-reduced-motion), 
+// e suspende a troca automática quando a aba do navegador está em segundo plano.
 (function () {
     const INTERVALO_SLIDE_MS = 10000;
 
@@ -75,14 +74,13 @@
     }
 
     // O botão é a única forma de pausar: o carrossel não para ao passar o
-    // mouse sobre ele, por decisão do projeto.
+    // mouse sobre ele, por decisão de usabilidade do projeto.
     botaoPausa.addEventListener('click', () => {
         emReproducao ? pausarReproducao() : iniciarReproducao();
     });
 
-    // Em segundo plano a troca automática é suspensa para não desperdiçar
-    // processamento; ao voltar, só é retomada se o usuário estava, de fato,
-    // com a reprodução ativa antes da aba perder o foco.
+    // Em segundo plano a troca automática é suspensa para economizar
+    // processamento; ao voltar, só é retomada se o usuário estava com a reprodução ativa.
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             clearInterval(intervaloId);
@@ -101,13 +99,12 @@
     }
 })();
 
-// ============================================================================
-// Header: escurece ao sair da área do hero
-// ============================================================================
+/* =======================================================================
+ * EFEITO DO CABEÇALHO (HEADER ESCURO NO SCROLL)
+ * ======================================================================= */
 // A altura do hero e do header só mudam com o layout da página (resize),
 // não a cada pixel rolado — por isso o limite de troca é calculado uma
-// única vez e reaproveitado a cada evento de scroll, em vez de forçar
-// reflow do navegador continuamente.
+// única vez e reaproveitado a cada evento de scroll, evitando reflow contínuo.
 (function () {
     const header = document.querySelector('.cabecalho-principal');
     const hero = document.querySelector('.hero-carrossel');
@@ -127,6 +124,7 @@
     recalcularLimite();
     atualizarHeader();
 
+    // Evento passive: true melhora a performance de rolagem no navegador
     window.addEventListener('scroll', atualizarHeader, { passive: true });
     window.addEventListener('resize', () => {
         recalcularLimite();
@@ -134,41 +132,34 @@
     });
 })();
 
-// ============================================================================
-// Funcionalidade do Menu Dropdown (Balãozinho de Categorias)
-// ============================================================================
+/* =======================================================================
+ * MENU DROPDOWN (BALÃO DE CATEGORIAS)
+ * ======================================================================= */
 (function () {
-    // 1. Identificamos os elementos na página HTML
     const btnCategorias = document.getElementById('btn-categorias');
     const listaCategorias = document.getElementById('lista-categorias');
 
-    // Se a página não tiver este menu, paramos o código por aqui para evitar erros
     if (!btnCategorias || !listaCategorias) return;
 
-    // 2. Ação de clicar no botão "Categorias"
+    // Ação de clicar no botão "Categorias"
     btnCategorias.addEventListener('click', function(evento) {
-        // Impede que o ecrã salte para o topo da página (comportamento padrão dos links com "#")
+        // Impede que a tela pule para o topo da página (comportamento padrão de links vazios)
         evento.preventDefault(); 
         
-        // Verifica se o balãozinho está escondido
         if (listaCategorias.classList.contains('escondido')) {
-            // Se estiver escondido, mostra-o!
             listaCategorias.classList.remove('escondido');
             listaCategorias.classList.add('mostrar');
-            btnCategorias.setAttribute('aria-expanded', 'true'); // Acessibilidade para leitores de ecrã
+            btnCategorias.setAttribute('aria-expanded', 'true'); // Acessibilidade para leitores de tela
         } else {
-            // Se já estiver aberto, esconde-o!
             listaCategorias.classList.add('escondido');
             listaCategorias.classList.remove('mostrar');
             btnCategorias.setAttribute('aria-expanded', 'false');
         }
     });
 
-    // 3. Ação para fechar o balãozinho quando o utilizador clica fora dele
+    // Ação para fechar o balãozinho quando o usuário clica fora da área do menu
     document.addEventListener('click', function(evento) {
-        // Verifica se o clique ocorreu FORA do botão 'Categorias' e FORA do balãozinho
         if (!btnCategorias.contains(evento.target) && !listaCategorias.contains(evento.target)) {
-            // Se o utilizador clicou fora, escondemos o balãozinho por segurança
             listaCategorias.classList.add('escondido');
             listaCategorias.classList.remove('mostrar');
             btnCategorias.setAttribute('aria-expanded', 'false');

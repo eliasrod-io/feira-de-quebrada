@@ -1,10 +1,22 @@
+/* =======================================================================
+ * PAINEL LOJISTA: AUTENTICAÇÃO, GERENCIAMENTO E INTEGRAÇÃO FIREBASE
+ * ======================================================================= */
+
+// ==========================================
+// 1. IMPORTAÇÕES E VARIÁVEIS GLOBAIS
+// ==========================================
+// Importa as configurações do Firebase a partir do arquivo local.
+// Como estamos na pasta 'scripts/', usamos './' para referenciar o mesmo diretório.
 import { db, auth } from "./firebase-config.js";
 import { ref, set, get, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 import { onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 let usuarioAtual = null;
 
-
+// ==========================================
+// 2. FUNÇÕES AUXILIARES DE ARMAZENAMENTO (LOCAL STORAGE)
+// ==========================================
+// Adiciona o UID do usuário às chaves do LocalStorage para evitar conflitos se múltiplos usuários logarem na mesma máquina.
 function getChaveUsuario(chave) {
   return usuarioAtual ? `${chave}_${usuarioAtual.uid}` : chave;
 }
@@ -27,7 +39,7 @@ function limparDadosLocais() {
 }
 
 // ==========================================
-// AUTENTICAÇÃO E CARREGAMENTO ESPECÍFICO
+// 3. MONITORAMENTO DE ESTADO DE AUTENTICAÇÃO
 // ==========================================
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -36,7 +48,7 @@ onAuthStateChanged(auth, async (user) => {
     
     atualizarNomeLojistaTopo();
 
-   
+    // Carrega dados do banco de forma assíncrona assim que o usuário faz login
     await carregarEstatisticas();
     await carregarDadosNegocio();
     await carregarHorarios();
@@ -47,8 +59,10 @@ onAuthStateChanged(auth, async (user) => {
     renderizarVitrine();
     atualizarStatusReportados();
   } else {
+    // Redireciona usuários não autenticados de volta à página de login.
+    // Usando '../' para apontar para a pasta pages/
     console.warn("Nenhum usuário logado. Redirecionando para login...");
-    window.location.href = 'login.html';
+    window.location.href = '../pages/login.html';
   }
 });
 
@@ -60,7 +74,6 @@ function atualizarNomeLojistaTopo(nomeNegocio = null) {
     elem.innerText = nomeNegocio;
     return;
   }
-
 
   const perfilSalvo = JSON.parse(localStorage.getItem(getChaveUsuario('perfilResponsavel')) || '{}');
   if (perfilSalvo.nome) {
@@ -75,7 +88,7 @@ function atualizarNomeLojistaTopo(nomeNegocio = null) {
 }
 
 // ==========================================
-// SAIR DA CONTA
+// 4. SAIR DA CONTA E GERENCIAMENTO DE STATUS
 // ==========================================
 const btnSairConta = document.getElementById('btnSairConta');
 if (btnSairConta) {
@@ -84,7 +97,8 @@ if (btnSairConta) {
       try {
         limparDadosLocais();
         await signOut(auth);
-        window.location.href = 'inicio.html';
+        // Redireciona para o índice na raiz do projeto
+        window.location.href = '../index.html';
       } catch (err) {
         console.error("Erro ao sair:", err);
         alert("Erro ao encerrar sessão: " + err.message);
@@ -93,9 +107,6 @@ if (btnSairConta) {
   });
 }
 
-// ==========================================
-// DESATIVAR / ATIVAR E EXCLUIR CONTA
-// ==========================================
 let contaAtiva = true;
 
 async function carregarStatusConta() {
@@ -177,7 +188,8 @@ if (btnExcluirConta) {
         await deleteUser(usuarioAtual);
 
         alert("Sua conta foi excluída com sucesso.");
-        window.location.href = 'inicial.html';
+        // Redireciona para a raiz do projeto após a exclusão
+        window.location.href = '../index.html';
       } catch (err) {
         console.error("Erro ao excluir conta:", err);
         if (err.code === 'auth/requires-recent-login') {
@@ -191,7 +203,7 @@ if (btnExcluirConta) {
 }
 
 // ==========================================
-// NAVEGAÇÃO
+// 5. NAVEGAÇÃO DE ABAS
 // ==========================================
 document.querySelectorAll('.menu-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -238,7 +250,7 @@ if (btnIrGaleria) {
 }
 
 // ==========================================
-// ESTATÍSTICAS
+// 6. ESTATÍSTICAS E CLIQUES
 // ==========================================
 async function carregarEstatisticas() {
   let views = 0;
@@ -295,7 +307,7 @@ if (btnWhatsappVitrine) {
 }
 
 // ==========================================
-// DADOS DO NEGÓCIO
+// 7. FORMULÁRIO DE DADOS DO NEGÓCIO
 // ==========================================
 const formNegocio = document.getElementById('formDadosNegocio');
 if (formNegocio) {
@@ -362,7 +374,6 @@ async function carregarDadosNegocio() {
     if (salvos) dados = JSON.parse(salvos);
   }
 
-  
   if (dados) {
     if (document.getElementById('inputNomeComercio')) document.getElementById('inputNomeComercio').value = dados.nome || '';
     if (document.getElementById('inputBairroComercio')) document.getElementById('inputBairroComercio').value = dados.bairro || '';
@@ -381,7 +392,6 @@ async function carregarDadosNegocio() {
       cb.checked = dados.pagamentos ? dados.pagamentos.includes(cb.value) : false;
     });
   } else {
-    
     if (document.getElementById('inputNomeComercio')) document.getElementById('inputNomeComercio').value = '';
     if (document.getElementById('inputBairroComercio')) document.getElementById('inputBairroComercio').value = '';
     if (document.getElementById('inputWhatsappComercio')) document.getElementById('inputWhatsappComercio').value = '';
@@ -393,7 +403,9 @@ async function carregarDadosNegocio() {
   }
 }
 
-
+// ==========================================
+// 8. GERENCIAMENTO DE GALERIA E LOGO
+// ==========================================
 const btnUploadLogo = document.getElementById('btnUploadLogo');
 const logoInput = document.getElementById('logoInput');
 if (btnUploadLogo && logoInput) {
@@ -460,7 +472,6 @@ if (btnRemoverLogo) {
     }
   });
 }
-
 
 const btnEscolherFoto = document.getElementById('btnEscolherFoto');
 const fotoInput = document.getElementById('fotoInput');
@@ -541,7 +552,9 @@ async function removerFoto(index) {
   }
 }
 
-
+// ==========================================
+// 9. HORÁRIOS DE FUNCIONAMENTO
+// ==========================================
 const btnSalvarHorarios = document.getElementById('btnSalvarHorarios');
 if (btnSalvarHorarios) {
   btnSalvarHorarios.addEventListener('click', async () => {
@@ -594,7 +607,9 @@ async function carregarHorarios() {
   }
 }
 
-
+// ==========================================
+// 10. RENDERIZAÇÃO DA VITRINE (PREVIEW)
+// ==========================================
 function renderizarVitrine() {
   const dados = JSON.parse(localStorage.getItem(getChaveUsuario('dadosNegocio')) || '{}');
   const fotos = JSON.parse(localStorage.getItem(getChaveUsuario('galeriaFotos')) || '[]');
@@ -681,7 +696,7 @@ function renderizarVitrine() {
 }
 
 // ==========================================
-// PERFIL DO RESPONSÁVEL
+// 11. PERFIL E SISTEMA DE DENÚNCIAS
 // ==========================================
 const selectTipoDoc = document.getElementById('selectTipoDoc');
 if (selectTipoDoc) {
@@ -746,7 +761,6 @@ async function carregarPerfil() {
     perfil = JSON.parse(localStorage.getItem(getChaveUsuario('perfilResponsavel')) || '{}');
   }
 
- 
   if (document.getElementById('inputNomeUser')) {
     document.getElementById('inputNomeUser').value = perfil.nome || (usuarioAtual ? usuarioAtual.displayName || '' : '');
   }
@@ -762,7 +776,6 @@ async function carregarPerfil() {
   
   atualizarNomeLojistaTopo();
 }
-
 
 document.querySelectorAll('.btn-reportar').forEach(btn => {
   btn.addEventListener('click', (e) => {

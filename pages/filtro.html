@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- ========================================== -->
+    <!-- METADADOS E CONFIGURAÇÕES GLOBAIS          -->
+    <!-- ========================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feira de Quebrada | Buscar e Filtrar Serviços</title>
+
+    <!-- ========================================== -->
+    <!-- FONTES EXTERNAS                            -->
+    <!-- ========================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- ========================================== -->
+    <!-- ESTILOS (CSS)                              -->
+    <!-- ========================================== -->
+    <!-- Uso do '../' para sair da pasta pages e entrar na pasta styles -->
+    <link rel="stylesheet" href="../styles/filtro.css">
+</head>
+<body>
+    
+    <!-- ========================================== -->
+    <!-- CONTEÚDO PRINCIPAL (LAYOUT DIVIDIDO)       -->
+    <!-- ========================================== -->
+    <main class="pagina-resultados">
+
+        <!-- ========================================== -->
+        <!-- BARRA LATERAL: OPÇÕES DE FILTRO            -->
+        <!-- ========================================== -->
+        <aside class="filtros">
+            <h2 class="busca">Busca Avançada</h2>
+
+            <!-- Filtro: Palavra-chave -->
+            <label for="busca">O que você procura?</label>
+            <input type="text" id="busca" placeholder="Nome ou palavra-chave">
+            
+            <!-- Filtro: Categoria -->
+            <label for="categoria">Categoria</label>
+            <select id="categoria">
+                <option value="todas">Todas</option>
+                <option value="manicure">Manicure</option>
+                <option value="beleza">Beleza</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="costura">Costura</option>
+                <option value="tatuagem">Tatuagem</option>
+                <option value="cabelo">Cabelo</option>
+            </select>
+
+            <!-- Filtro: Localização -->
+            <label for="localizacao">Localização (Bairro)</label>
+            <input type="text" id="localizacao" placeholder="Ex: Centro, Itaim...">
+            
+            <button type="button" class="aplica-filtro">Aplicar Filtros</button>
+        </aside>
+
+        <!-- ========================================== -->
+        <!-- ÁREA PRINCIPAL: LISTA DE RESULTADOS        -->
+        <!-- ========================================== -->
+        <section class="resultados">
+
+            <!-- Cabeçalho dos resultados: Contagem e Ordenação -->
+            <div class="topo-resultados">
+                <p>Mostrando <strong id="resultado"></strong> resultados encontrados</p>
+
+                <div class="ordenacao">
+                    <label for="ordenar">Ordenar por:</label>
+                    <select id="ordenar">
+                        <option>Mais recentes</option>
+                        <option>Mais antigos</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grade (Grid/Flex) de Cards de Anúncios -->
+            <div class="card-container">
+                
+                <!-- CARD 1: Kezzy Souza -->
+                <div class="card-resultados" data-categoria="tatuagem">
+                    <!-- Imagem principal do card atualizada para a pasta imagens/ -->
+                    <img src="../imagens/logo.kelly.jpeg" alt="Logotipo Kezzy Souza">
+                    
+                    <span class="top-categorias">Tatuagem</span>
+                    <span class="top-favoritos">☆ Destaque</span>
+
+                    <div class="conteudo-card">
+                        <div class="localizacao">
+                            <!-- Ícone do marcador atualizado para a pasta icones/ -->
+                            <img src="../icones/iconemarcador.png" alt="Ícone de local" style="width: 20px; height: 20px; margin-right: 5px;">
+                            <span class="bairro">Vila da Saúde</span>
+                        </div>
+
+                        <div class="informacoes">
+                            <h3>Kezzy Souza</h3>
+                            <p>Projeto único para a mulher que sabe quem é, e se permite ser</p>
+                        </div>
+
+                        <button type="button" class="ver-detalhes">Ver detalhes</button>
+                    </div>
+                </div> <!-- Fim CARD 1 (A div que estava faltando no seu código original) -->
+
+                <!-- CARD 2: Exemplo -->
+                <div class="card-resultados" data-categoria="tatuagem">
+                    <!-- NOTA TÉCNICA: Verifique se 'tatuadora.jpg' está na pasta imagens. Caso seja o tatuador.jpg, mude o nome aqui. -->
+                    <img src="../imagens/tatuadora.jpg" alt="Imagem de Tatuagem de Exemplo">
+                    
+                    <span class="top-categorias">Tatuagem</span>
+                    <span class="top-favoritos">☆ Destaque</span>
+
+                    <div class="conteudo-card">
+                        <div class="localizacao">
+                            <!-- Ícone corrigido e padronizado -->
+                            <img src="../icones/iconemarcador.png" alt="Ícone de local" style="width: 20px; height: 20px; margin-right: 5px;">
+                            <span class="bairro">Exemplo</span>
+                        </div>
+
+                        <div class="informacoes">
+                            <h3>Exemplo</h3>
+                            <p>Exemplo</p>
+                        </div>
+
+                        <button type="button" class="ver-detalhes">Ver detalhes</button>
+                    </div>
+                </div> <!-- Fim CARD 2 -->
+                
+            </div> <!-- Fim .card-container -->
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- SCRIPTS (JS)                               -->
+    <!-- ========================================== -->
+    <!-- Uso do '../' para sair da pasta pages e entrar na pasta scripts -->
+    <script src="../scripts/filtro.js" defer></script>
+</body>
+</html>
