@@ -56,27 +56,34 @@
             <img src="imagens/logo.png" alt="Logo da Feira de Quebrada">
         </a>
 
-        <!-- NOVO: Botão do menu sanduíche (visível apenas no celular) -->
+        <!-- Botão do menu sanduíche (visível apenas no celular) -->
         <button id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">☰</button>
 
-        <!-- NOVO: Container que vai aparecer/desaparecer no mobile -->
+        <!-- NOVO: Overlay escuro que fica atrás do menu -->
+        <div id="overlay-menu" class="overlay-menu"></div>
+
+        <!-- Container do menu lateral (Off-canvas) -->
         <div id="menu-colapsavel" class="menu-colapsavel">
+            
+            <!-- NOVO: Botão Fechar (X) -->
+            <button id="btn-fechar-menu" class="btn-fechar-menu" aria-label="Fechar menu">✕</button>
+
             <nav aria-label="Navegação principal">
                 <ul>
                     <li><a href="index.html">Início</a></li>
-                    <!-- Menu Dropdown de Categorias -->
+                    
                     <li class="menu-dropdown">
                         <a href="#" id="btn-categorias" aria-expanded="false" aria-controls="lista-categorias">Categorias ▾</a>
                         <ul id="lista-categorias" class="dropdown-balao escondido">
                             <li><a href="pages/filtro.html?categoria=alimentacao">Alimentação</a></li>
-                            <li><a href="pages/filtro.html?categoria=assistencia">Assistência Técnica</a></li>
+                            <li><a href="pages/filtro.html?categoria=assistencia">Assistência Téc.</a></li>
                             <li><a href="pages/filtro.html?categoria=beleza">Beleza</a></li>
                             <li><a href="pages/filtro.html?categoria=cabelo">Cabelo</a></li>
                             <li><a href="pages/filtro.html?categoria=costura">Costura</a></li>
-                            <li><a href="pages/filtro.html?categoria=festas">Festas e Eventos</a></li>
-                            <li><a href="pages/filtro.html?categoria=fretes">Fretes e Entregas</a></li>
+                            <li><a href="pages/filtro.html?categoria=festas">Festas</a></li>
+                            <li><a href="pages/filtro.html?categoria=fretes">Fretes</a></li>
                             <li><a href="pages/filtro.html?categoria=manicure">Manicure</a></li>
-                            <li><a href="pages/filtro.html?categoria=obras">Obras e Reformas</a></li>
+                            <li><a href="pages/filtro.html?categoria=obras">Obras</a></li>
                             <li><a href="pages/filtro.html?categoria=tatuagem">Tatuagem</a></li>
                         </ul>
                     </li>
@@ -86,7 +93,7 @@
 
             <search>
                 <form role="search">
-                    <input type="search" placeholder="O que você está procurando?" aria-label="Buscar produtos ou serviços">
+                    <input type="search" placeholder="O que busca?" aria-label="Buscar produtos ou serviços">
                     <button type="submit">Buscar</button>
                 </form>
             </search>
