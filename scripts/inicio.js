@@ -168,15 +168,33 @@
 })();
 
 /* =======================================================================
- * MENU SANDUÍCHE (MOBILE)
+ * MENU SANDUÍCHE LATERAL (OFF-CANVAS)
  * ======================================================================= */
 (function () {
     const btnMenu = document.getElementById('btn-menu-mobile');
     const menuColapsavel = document.getElementById('menu-colapsavel');
+    const btnFechar = document.getElementById('btn-fechar-menu');
+    const overlay = document.getElementById('overlay-menu');
 
     if (!btnMenu || !menuColapsavel) return;
 
-    btnMenu.addEventListener('click', function() {
+    // Função central que abre e fecha o menu
+    function alternarMenu() {
         menuColapsavel.classList.toggle('aberto');
-    });
+        overlay.classList.toggle('ativo');
+        
+        // Impede o site de rolar no fundo enquanto o menu está aberto
+        if (menuColapsavel.classList.contains('aberto')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Eventos de clique
+    btnMenu.addEventListener('click', alternarMenu);
+    
+    // Permite fechar clicando no 'X' ou clicando na área escura (overlay)
+    if (btnFechar) btnFechar.addEventListener('click', alternarMenu);
+    if (overlay) overlay.addEventListener('click', alternarMenu);
 })();
