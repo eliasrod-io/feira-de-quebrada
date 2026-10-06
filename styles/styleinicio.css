@@ -404,17 +404,20 @@ header.cabecalho-principal form[role="search"] button {
     opacity: 1 !important;
 }
 
-/* Mobile dropdown (centro) */
 @media (max-width: 900px) {
-    .dropdown-balao {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .dropdown-balao.escondido {
-        transform: translate(-50%, -10px);
-    }
+    .dropdown-balao,
+    .dropdown-balao.escondido,
     .dropdown-balao.mostrar {
-        transform: translate(-50%, 0);
+        transform: none;
+    }
+    .dropdown-balao {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        margin-top: 0.5rem;
+        max-height: 160px;
+        box-shadow: none;
+        background-color: var(--cor-card-bege);
     }
 }
 
