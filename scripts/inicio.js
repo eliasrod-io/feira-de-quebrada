@@ -166,3 +166,17 @@
         }
     });
 })();
+
+/* =======================================================================
+ * MENU SANDUÍCHE (MOBILE)
+ * ======================================================================= */
+(function () {
+    const btnMenu = document.getElementById('btn-menu-mobile');
+    const menuColapsavel = document.getElementById('menu-colapsavel');
+
+    if (!btnMenu || !menuColapsavel) return;
+
+    btnMenu.addEventListener('click', function() {
+        menuColapsavel.classList.toggle('aberto');
+    });
+})();
