@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta | Feira da Quebrada</title>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../styles/cadastro.css">
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img id="imagem-cadastro" src="../imagens/dread.jpg" alt="Imagem de cadastro">
+        </div>
+
+        <div class="form-wrapper">
+            <div class="card">
+                <a href="../index.html" class="logo">
+                    <img src="../imagens/logo.png" alt="Logo Feira da Quebrada">
+                </a>
+                <div class="subtitulo">Cadastre sua conta</div>
+
+                <!-- Botões de Seleção -->
+                <div class="usuario">
+                    <button type="button" class="btn-perfil ativo" id="btn-cliente">Cliente</button>
+                    <button type="button" class="btn-perfil" id="btn-empreendedor">Empreendedor</button>
+                </div>
+
+                <!-- Formulário Único -->
+                <form id="form-cadastro" class="form-unico">
+                    <div class="input-group">
+                        <label for="name" id="label-nome">Nome Completo:</label>
+                        <div class="input-box">
+                            <img src="../icones/icone-user.png" alt="" aria-hidden="true">
+                            <input type="text" id="name" placeholder="Seu nome" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">E-mail:</label>
+                        <div class="input-box">
+                            <img src="../icones/icone-email.png" alt="" aria-hidden="true">
+                            <input type="email" id="email" placeholder="Seu @email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Senha:</label>
+                        <div class="input-box">
+                            <img src="../icones/icone-lock.png" alt="" aria-hidden="true">
+                            <input type="password" id="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="palavra-seguranca">Palavra de Segurança:</label>
+                        <div class="input-box">
+                            <img src="../icones/icone-lock.png" alt="" aria-hidden="true">
+                            <input type="password" id="palavra-seguranca" placeholder="Ex: nome do seu primeiro animal" required>
+                        </div>
+                        <small>*Esta palavra será usada para recuperar sua senha. Guarde-a bem.</small>
+                    </div>
+                    
+                    <hr>
+
+                    <button type="submit" class="btn-submit">Criar conta</button>
+                    <p class="login-link">Já possui uma conta? <a href="login.html">Faça login</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script como módulo para permitir o Firebase -->
+    <script type="module" src="../scripts/cadastro.js"></script>
+</body>
+</html>
