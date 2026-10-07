@@ -1,15 +1,14 @@
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "DM Sans", sans-serif;
 }
 
-body {
+body{
     background-color: #FFF4E4;
     min-height: 100vh;
 }
-
 .container {
     display: flex;
     width: 100%;
@@ -46,7 +45,6 @@ body {
     flex-direction: column;
     align-items: center;
 }
-
 .logo {
     text-align: center;
     margin-bottom: 10px;
@@ -56,7 +54,7 @@ body {
     width: 200px;
 }
 
-.subtitulo {
+.subtitulo{
     font-size: 25px;
     font-weight: bold;
     color: #333;
@@ -70,9 +68,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* ==========================================
- * BOTÕES DE PERFIL (CLIENTE / EMPREENDEDOR)
- * ========================================== */
 .btn-perfil {
     flex: 1;
     padding: 8px 0;
@@ -92,29 +87,26 @@ body {
     border-color: #312719;
 }
 
-
-form {
+form{
     width: 100%;
 }
 
-.input-group {
+.input-group{
     margin-bottom: 12px;
     display: flex;
     flex-direction: column;
 }
 
-.input-group label {
+.input-group label{
     font-size: 11px;
     color: #333;
     margin-bottom: 4px;
     font-weight: 600;
 }
-
 .input-group small {
     font-size: 9px;
     margin-top: 4px;
 }
-
 .input-box {
     position: relative;
     display: flex;
@@ -129,29 +121,26 @@ form {
     background-color: transparent;
     font-size: 12px;
 }
-
-.input-box input::placeholder {
+.input-box input::placeholder{
     color: #b3a58e;
 }
-
 .input-box img {
     position: absolute;
     left: 10px;
     width: 16px;
 }
-
-.input-box input:focus {
+.input-box input:focus{
     border-color: #000;
 }
 
-hr {
+hr{
     border: none;
     border-top: 1px solid #d4be95;
     margin: 15px 0;
     width: 100%;
 }
 
-.btn-submit {
+.btn-submit{
     width: 70%;
     display: block;
     margin: 0 auto;
@@ -166,27 +155,23 @@ hr {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.login-link {
+.login-link{
     text-align: center;
     font-size: 10px;
     color: #000;
     margin-top: 10px;
 }
-
 .login-link a {
     color: #333;
     font-weight: bold;
     text-decoration: none;
 }
-
-.login-link a:hover {
+.login-link a:hover{
     text-decoration: underline;
 }
-
-.form-empreendedor {
+.form-empreendedor{
     display: none;
 }
-
 @media (max-width: 900px) {
 
     .image-container {
@@ -198,7 +183,6 @@ hr {
     }
 
 }
-
 @media (max-width: 640px) {
 
     .image-container {
