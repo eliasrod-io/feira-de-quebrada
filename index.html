@@ -136,7 +136,7 @@
             </div>
         </section>
 
-        <!-- Seção 2: Galeria de Profissões -->
+        <!-- Seção 2: Galeria de Profissões (Carrossel contínuo) -->
         <section class="secao-profissoes" aria-labelledby="titulo-profissoes">
             <div class="profissoes-container">
                 <header class="profissoes-cabecalho">
@@ -144,13 +144,15 @@
                         Descubra quem faz acontecer<br>na sua quebrada.
                     </h2>
                     <p>
-                        Conheça algumas das profissões mais registradas e procuradas na
-                        <em>Feira de Quebrada</em>.
+                        Conheça algumas das profissões mais registradas e
+                        procuradas na <em>Feira da Quebrada</em>.
                     </p>
                 </header>
+            </div>
 
+            <!-- Faixa de fotos que roda sozinha (o JS duplica os itens para o loop infinito) -->
+            <div class="profissoes-carrossel" id="carrossel-profissoes">
                 <ul class="profissoes-galeria" role="list">
-                    <!-- Imagens já apontando corretamente para a pasta imagens/ -->
                     <li class="galeria-item">
                         <figure>
                             <img src="imagens/trancista.jpg" alt="Profissional trancista fazendo tranças nagô" loading="lazy">

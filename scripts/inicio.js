@@ -216,3 +216,75 @@ document.addEventListener('DOMContentLoaded', function () {
         if (window.innerWidth > 900) fecharMenu();
     });
 });
+
+/* =======================================================================
+ * CARROSSEL CONTÍNUO - SEÇÃO DE PROFISSÕES
+ * ======================================================================= */
+// As fotos correm da direita para a esquerda em loop infinito (a animação
+// em si é CSS). O JS só: duplica as fotos para o loop não ter buracos,
+// calcula a largura de uma volta e a velocidade, e cria o botão de pausa.
+(function () {
+    const VELOCIDADE_PX_POR_SEGUNDO = 40;
+
+    const carrossel = document.getElementById('carrossel-profissoes');
+    if (!carrossel) return;
+
+    const galeria = carrossel.querySelector('.profissoes-galeria');
+    const originais = Array.from(galeria.querySelectorAll('.galeria-item'));
+    if (originais.length === 0) return;
+
+    carrossel.setAttribute('role', 'region');
+    carrossel.setAttribute('aria-roledescription', 'carrossel');
+    carrossel.setAttribute('aria-label', 'Profissões em destaque');
+
+    const clones = [];
+
+    function montar() {
+        clones.forEach(c => c.remove());
+        clones.length = 0;
+
+        // Largura de um conjunto = posição do fim da última foto original
+        const ultima = originais[originais.length - 1];
+        const larguraSet = ultima.offsetLeft + ultima.offsetWidth +
+            parseFloat(getComputedStyle(ultima).marginRight);
+
+        // Copias suficientes para cobrir a tela + 1 conjunto (loop sem falhas)
+        const copias = Math.ceil(window.innerWidth / larguraSet) + 1;
+        for (let i = 0; i < copias; i++) {
+            originais.forEach(item => {
+                const clone = item.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                clone.querySelector('img')?.setAttribute('alt', '');
+                galeria.appendChild(clone);
+                clones.push(clone);
+            });
+        }
+
+        galeria.style.setProperty('--largura-set', larguraSet + 'px');
+        galeria.style.setProperty('--duracao', (larguraSet / VELOCIDADE_PX_POR_SEGUNDO) + 's');
+    }
+
+    // Botão de pausa/retomada
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'carrossel-pausa-profissoes';
+    botao.textContent = 'Pausar fotos';
+    botao.setAttribute('aria-pressed', 'false');
+    carrossel.insertAdjacentElement('afterend', botao);
+
+    botao.addEventListener('click', () => {
+        const pausado = carrossel.classList.toggle('pausado');
+        botao.textContent = pausado ? 'Retomar fotos' : 'Pausar fotos';
+        botao.setAttribute('aria-pressed', String(pausado));
+    });
+
+    // Espera as imagens carregarem para medir certo, e remonta ao redimensionar
+    window.addEventListener('load', montar);
+    montar();
+
+    let timer;
+    window.addEventListener('resize', () => {
+        clearTimeout(timer);
+        timer = setTimeout(montar, 200);
+    });
+})();
