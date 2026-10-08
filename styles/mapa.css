@@ -1,13 +1,21 @@
-* {
+/* ==========================================
+ * RESET LOCAL — só afeta a página do mapa
+ * ========================================== */
+body.pagina-mapa * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body {
+body.pagina-mapa {
     font-family: 'Poppins', sans-serif;
     background-color: #f4f4f9;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
 }
+
 
 body.pagina-mapa {
     width: 100vw;
