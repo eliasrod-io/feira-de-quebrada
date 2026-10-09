@@ -843,14 +843,14 @@ header.cabecalho-principal form[role="search"] button {
     padding: 5rem 2.5rem;
 }
 
-.coment .header h2 {
+.coment .headerdepoimentos h2 {
     font-size: 2.5rem;
     font-weight: 500;
     margin-bottom: 8px;
     color: #312719;
 }
 
-.coment .header p {
+.coment .headerdepoimentos p {
     font-size: 1.25rem;
     font-weight: 300;
     color: #312719;
@@ -1006,7 +1006,10 @@ header.cabecalho-principal form[role="search"] button {
 /* ==========================================
  * 11. RODAPÉ (FOOTER)
  * ========================================== */
-.rodape-principal { background-color: var(--cor-card-bege); }
+
+.rodape-principal {
+    background-color: var(--cor-card-bege);
+}
 
 .rodape-container {
     max-width: var(--largura-maxima-conteudo);
@@ -1014,8 +1017,9 @@ header.cabecalho-principal form[role="search"] button {
     padding: 3rem 2.5rem;
 }
 
-.rodape-marca { max-width: 420px; }
-.rodape-logo-link img { margin-bottom: 1rem; }
+.rodape-marca {
+    max-width: 420px;
+}
 
 .rodape-marca p {
     font-size: 0.9rem;
@@ -1035,4 +1039,24 @@ header.cabecalho-principal form[role="search"] button {
     justify-content: center;
     width: 40px;
     height: 40px;
+    background-color: var(--cor-fundo-creme);
+    border-radius: 50%;
+    transition: transform var(--transicao-padrao);
 }
+
+.rodape-redes a:hover {
+    transform: translateY(-2px);
+}
+
+.rodape-copyright {
+    background-color: var(--cor-bege-destaque);
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.rodape-copyright small {
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario);
+}
+
+
